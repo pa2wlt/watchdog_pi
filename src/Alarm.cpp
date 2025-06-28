@@ -26,6 +26,7 @@
 
 #include <map>
 #include <cmath>
+#include <algorithm> /* required to sort the list of alarms alphabetically */
 #include <wx/wx.h>
 #include <wx/stdpaths.h>
 
