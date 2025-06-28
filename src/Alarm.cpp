@@ -3376,6 +3376,10 @@ void Alarm::LoadConfigAll()
             Alarm::s_Alarms.push_back(alarm);
         }
     }
+    // sort the list of alarms alphabetically
+    std::sort(s_Alarms.begin(), s_Alarms.end(), [](Alarm* a, Alarm* b) {
+        return a->Type().CmpNoCase(b->Type()) < 0;
+    });
 }
 
 void Alarm::SaveConfigAll()
