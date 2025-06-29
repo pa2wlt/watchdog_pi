@@ -167,6 +167,16 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 #endif
 
 #ifndef __OCPN__ANDROID__
+    wxBoxSizer* sizer = (wxBoxSizer*)this->GetSizer();
+
+    m_toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL);
+    m_toolbar->AddTool(wxID_NEW, _("New Alarm"), wxArtProvider::GetBitmap(wxART_PLUS));
+    m_toolbar->AddTool(wxID_EDIT, _("Edit Alarm"), wxArtProvider::GetBitmap(wxART_EDIT));
+    m_toolbar->AddTool(wxID_DELETE, _("Delete Alarm"), wxArtProvider::GetBitmap(wxART_MINUS));
+    m_toolbar->Realize();
+
+    sizer->Prepend(m_toolbar, 0, wxEXPAND | wxALL, 5);
+
     this->GetSizer()->Fit( this );
     this->Layout();
     SetSize(size);
@@ -175,6 +185,9 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     SetSize(size);
 #endif
 
+    Bind(wxEVT_TOOL, &WatchdogDialog::OnNew, this, wxID_NEW);
+    Bind(wxEVT_TOOL, &WatchdogDialog::OnEdit, this, wxID_EDIT);
+    Bind(wxEVT_TOOL, &WatchdogDialog::OnDelete, this, wxID_DELETE);
 }
 
 WatchdogDialog::~WatchdogDialog()

@@ -54,6 +54,8 @@ public:
     void OnDeleteAll( wxCommandEvent& event );
     void OnConfiguration( wxCommandEvent& event );
     
+     wxToolBar* m_toolbar;
+     
 private:
     long HitTest(wxPoint pos, int);
     watchdog_pi &m_watchdog_pi;
