@@ -153,8 +153,6 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     m_lStatus->InsertColumn(ALARM_TYPE, "T");
     m_lStatus->InsertColumn(ALARM_STATUS, "S");
     m_lStatus->InsertColumn(ALARM_COUNT, "C");
-    
-    m_lStatus->Bind(wxEVT_LIST_ITEM_SELECTED, &WatchdogDialog::OnItemSelected, this);
 
 #ifndef __OCPN__ANDROID__
     m_lStatus->SetColumnWidth(ALARM_ENABLED, wxLIST_AUTOSIZE);
@@ -169,96 +167,14 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 #endif
 
 #ifndef __OCPN__ANDROID__
-   wxBoxSizer* sizer = (wxBoxSizer*)this->GetSizer();
-
-    // Create colored panel for the button bar (visually debug layout)
-    wxPanel* buttonBarPanel = new wxPanel(this);
-    buttonBarPanel->SetBackgroundColour(*wxRED); // Red background for clear visibility
-
-    // Horizontal sizer inside the colored panel
-    wxBoxSizer* buttonBar = new wxBoxSizer(wxHORIZONTAL);
-
-    // Create buttons, parent = buttonBarPanel
-    wxButton* btnNew = new wxButton(buttonBarPanel, wxID_NEW, _("New"));
-    wxButton* btnEdit = new wxButton(buttonBarPanel, wxID_EDIT, _("Edit"));
-    wxButton* btnDelete = new wxButton(buttonBarPanel, wxID_DELETE, _("Delete"));
-    wxButton* btnReset = new wxButton(buttonBarPanel, wxID_REFRESH, _("Reset"));
-    wxButton* btnResetAll = new wxButton(buttonBarPanel, wxID_ANY, _("Reset All"));
-    wxButton* btnDeleteAll = new wxButton(buttonBarPanel, wxID_CLEAR, _("Delete All"));
-
-    // Optional: Restrict button heights
-    int buttonHeight = 24;
-    btnNew->SetMaxSize(wxSize(-1, buttonHeight));
-    btnEdit->SetMaxSize(wxSize(-1, buttonHeight));
-    btnDelete->SetMaxSize(wxSize(-1, buttonHeight));
-    btnReset->SetMaxSize(wxSize(-1, buttonHeight));
-    btnResetAll->SetMaxSize(wxSize(-1, buttonHeight));
-    btnDeleteAll->SetMaxSize(wxSize(-1, buttonHeight));
-
-    // Add buttons to the horizontal sizer with minimal margins
-    buttonBar->Add(btnNew, 0, wxALL, 0);
-    buttonBar->Add(btnEdit, 0, wxALL, 0);
-    buttonBar->Add(btnDelete, 0, wxALL, 0);
-    buttonBar->Add(btnReset, 0, wxALL, 0);
-    buttonBar->Add(btnResetAll, 0, wxALL, 0);
-    buttonBar->Add(btnDeleteAll, 0, wxALL, 0);
-
-    buttonBarPanel->SetSizer(buttonBar);
-
-    // Limit total height of the button panel to visualize stretching
-    int totalHeight = 30;
-    buttonBarPanel->SetMinSize(wxSize(-1, totalHeight));
-    buttonBarPanel->SetMaxSize(wxSize(-1, totalHeight));
-
-    // Add button panel to the main sizer
-    sizer->Prepend(buttonBarPanel, 0, wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 2);
- 
-
-    // Set distinct color for the alarm list to visualize space
-    m_lStatus->SetBackgroundColour(*wxBLUE);
-
-    // Ensure the list fills all remaining space
-    sizer->Add(m_lStatus, 1, wxEXPAND | wxALL, 2);
- 
-    // Bind button events
-    btnNew->Bind(wxEVT_BUTTON, &WatchdogDialog::OnNew, this);
-    btnEdit->Bind(wxEVT_BUTTON, &WatchdogDialog::OnEdit, this);
-    btnDelete->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDelete, this);
-    btnReset->Bind(wxEVT_BUTTON, &WatchdogDialog::OnReset, this);
-    btnResetAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnResetAll, this);
-    btnDeleteAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDeleteAll, this);
-
-    // only for debugging:
-    wxSize panelSize = buttonBarPanel->GetSize();
-    wxSize listSize = m_lStatus->GetSize();
-    wxSize btnSize = btnNew->GetSize();
-
-    printf("DEBUG - Before layout: Button bar panel: %d x %d | List: %d x %d | Button New: %d x %d\n",
-        panelSize.GetWidth(), panelSize.GetHeight(),
-        listSize.GetWidth(), listSize.GetHeight(),
-        btnSize.GetWidth(), btnSize.GetHeight());
-    fflush(stdout);
-
-        // Apply layout updates
+    this->GetSizer()->Fit( this );
     this->Layout();
-
-    printf("DEBUG - Button bar panel: %d x %d | List: %d x %d | Button New: %d x %d\n",
-        panelSize.GetWidth(), panelSize.GetHeight(),
-        listSize.GetWidth(), listSize.GetHeight(),
-        btnSize.GetWidth(), btnSize.GetHeight());
-    fflush(stdout);
-
-//    SetSize(size);
-    this->SetSizeHints(250, 100);
+    SetSize(size);
+    this->SetSizeHints( 250, 100 );
 #else
     SetSize(size);
 #endif
 
-    Bind(wxEVT_TOOL, &WatchdogDialog::OnNew, this, wxID_NEW);
-    Bind(wxEVT_TOOL, &WatchdogDialog::OnEdit, this, wxID_EDIT);
-    Bind(wxEVT_TOOL, &WatchdogDialog::OnDelete, this, wxID_DELETE);
-    Bind(wxEVT_TOOL, &WatchdogDialog::OnResetAll, this, wxID_REFRESH);
-    Bind(wxEVT_TOOL, &WatchdogDialog::OnDeleteAll, this, wxID_CLEAR);
 }
 
 WatchdogDialog::~WatchdogDialog()
@@ -278,8 +194,6 @@ WatchdogDialog::~WatchdogDialog()
 
 void WatchdogDialog::UpdateAlarms()
 {
-    m_menualarm = nullptr; // Clear selection on update
-
     while((int)Alarm::s_Alarms.size() > m_lStatus->GetItemCount()) {
         wxListItem item;
         m_lStatus->InsertItem(0, item);
@@ -299,14 +213,6 @@ void WatchdogDialog::UpdateAlarms()
     }
 }
 
-void WatchdogDialog::OnItemSelected(wxListEvent& event)
-{
-    long index = event.GetIndex();
-    if(index >= 0 && (unsigned)index < Alarm::s_Alarms.size())
-        m_menualarm = Alarm::s_Alarms[index];
-    else
-        m_menualarm = nullptr;
-}
 void WatchdogDialog::UpdateStatus(int index)
 {
     Alarm *alarm = Alarm::s_Alarms[index];
@@ -336,8 +242,6 @@ void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
     long index = HitTest(pos, flags);
     if(index < 0)
         return;
-
-    m_menualarm = Alarm::s_Alarms[index];
 
     Alarm *alarm = Alarm::s_Alarms[index];
     alarm->m_bEnabled = !alarm->m_bEnabled;
@@ -416,8 +320,6 @@ void WatchdogDialog::OnNew( wxCommandEvent& event )
 
 void WatchdogDialog::OnEdit( wxCommandEvent& event )
 {
-    if(!m_menualarm || Alarm::s_Alarms.empty())
-        return;
     EditAlarmDialog dlg(this, m_menualarm);
     if(dlg.ShowModal() == wxID_OK)
         dlg.Save();
@@ -426,22 +328,17 @@ void WatchdogDialog::OnEdit( wxCommandEvent& event )
 
 void WatchdogDialog::OnReset( wxCommandEvent& event )
 {
-    if(!m_menualarm || Alarm::s_Alarms.empty())
-        return;
     m_menualarm->Reset();
     UpdateAlarms();
 }
 
 void WatchdogDialog::OnDelete( wxCommandEvent& event )
 {
-    if(!m_menualarm || Alarm::s_Alarms.empty())
-        return;
     std::vector<Alarm*>::iterator it = Alarm::s_Alarms.begin();
     while(*it != m_menualarm)
         it++;
     Alarm::s_Alarms.erase(it);
     delete m_menualarm;
-    m_menualarm = nullptr;
     UpdateAlarms();
 }
 
@@ -452,14 +349,9 @@ void WatchdogDialog::OnResetAll( wxCommandEvent& event )
 }
 
 void WatchdogDialog::OnDeleteAll( wxCommandEvent& event )
-{   int response = wxMessageBox(_("Are you sure you want to delete all alarms?"), 
-                            _("Confirm Delete All"), 
-                            wxYES_NO | wxICON_WARNING, this);
-                            
-    if (response == wxYES) {                        
-        Alarm::DeleteAll();
-        UpdateAlarms();
-    }
+{
+    Alarm::DeleteAll();
+    UpdateAlarms();
 }
 
 void WatchdogDialog::OnConfiguration( wxCommandEvent& event )
