@@ -228,18 +228,19 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     btnResetAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnResetAll, this);
     btnDeleteAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDeleteAll, this);
 
+    // only for debugging:
+    wxSize panelSize = buttonBarPanel->GetSize();
+    wxSize listSize = m_lStatus->GetSize();
+    wxSize btnSize = btnNew->GetSize();
+
     printf("DEBUG - Before layout: Button bar panel: %d x %d | List: %d x %d | Button New: %d x %d\n",
         panelSize.GetWidth(), panelSize.GetHeight(),
         listSize.GetWidth(), listSize.GetHeight(),
         btnSize.GetWidth(), btnSize.GetHeight());
+    fflush(stdout);
 
         // Apply layout updates
     this->Layout();
-
-    // Hard debug after layout
-    wxSize panelSize = buttonBarPanel->GetSize();
-    wxSize listSize = m_lStatus->GetSize();
-    wxSize btnSize = btnNew->GetSize();
 
     printf("DEBUG - Button bar panel: %d x %d | List: %d x %d | Button New: %d x %d\n",
         panelSize.GetWidth(), panelSize.GetHeight(),
