@@ -169,19 +169,32 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 #ifndef __OCPN__ANDROID__
     wxBoxSizer* sizer = (wxBoxSizer*)this->GetSizer();
 
-    m_toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL);
+    // Create horizontal container for buttons
+    wxBoxSizer* buttonBar = new wxBoxSizer(wxHORIZONTAL);
 
-    int iconSize = 32;
+    // Create standard buttons with visible borders
+    wxButton* btnNew = new wxButton(this, wxID_NEW, _("New"));
+    wxButton* btnEdit = new wxButton(this, wxID_EDIT, _("Edit"));
+    wxButton* btnDelete = new wxButton(this, wxID_DELETE, _("Delete"));
+    wxButton* btnResetAll = new wxButton(this, wxID_REFRESH, _("Reset All"));
+    wxButton* btnDeleteAll = new wxButton(this, wxID_CLEAR, _("Delete All"));
 
-    m_toolbar->AddTool(wxID_NEW, _("New Alarm"), wxArtProvider::GetBitmap(wxART_PLUS, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
-    m_toolbar->AddTool(wxID_EDIT, _("Edit Alarm"), wxArtProvider::GetBitmap(wxART_EDIT, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
-    m_toolbar->AddTool(wxID_DELETE, _("Delete Alarm"), wxArtProvider::GetBitmap(wxART_MINUS, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
-    m_toolbar->AddSeparator(); // Optional separator for clarity
-    m_toolbar->AddTool(wxID_REFRESH, _("Reset All"), wxArtProvider::GetBitmap(wxART_REDO, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
-    m_toolbar->AddTool(wxID_CLEAR, _("Delete All"), wxArtProvider::GetBitmap(wxART_DELETE, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
-    m_toolbar->Realize();
-    m_toolbar->SetMaxSize(wxSize(-1, iconSize + 6));
-    sizer->Prepend(m_toolbar, 0, wxEXPAND | wxALL, 2);
+    // Add buttons to horizontal sizer with spacing
+    buttonBar->Add(btnNew, 0, wxALL, 2);
+    buttonBar->Add(btnEdit, 0, wxALL, 2);
+    buttonBar->Add(btnDelete, 0, wxALL, 2);
+    buttonBar->Add(btnResetAll, 0, wxALL, 2);
+    buttonBar->Add(btnDeleteAll, 0, wxALL, 2);
+
+    // Place button bar at the top of the main sizer
+    sizer->Prepend(buttonBar, 0, wxEXPAND | wxALL, 2);
+
+    // Event bindings
+    btnNew->Bind(wxEVT_BUTTON, &WatchdogDialog::OnNew, this);
+    btnEdit->Bind(wxEVT_BUTTON, &WatchdogDialog::OnEdit, this);
+    btnDelete->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDelete, this);
+    btnResetAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnResetAll, this);
+    btnDeleteAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDeleteAll, this);
 
     this->GetSizer()->Fit( this );
     this->Layout();
