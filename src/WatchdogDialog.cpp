@@ -170,12 +170,21 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     wxBoxSizer* sizer = (wxBoxSizer*)this->GetSizer();
 
     m_toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL);
-    m_toolbar->AddTool(wxID_NEW, _("New Alarm"), wxArtProvider::GetBitmap(wxART_PLUS));
-    m_toolbar->AddTool(wxID_EDIT, _("Edit Alarm"), wxArtProvider::GetBitmap(wxART_EDIT));
-    m_toolbar->AddTool(wxID_DELETE, _("Delete Alarm"), wxArtProvider::GetBitmap(wxART_MINUS));
-    m_toolbar->Realize();
 
-    sizer->Prepend(m_toolbar, 0, wxEXPAND | wxALL, 5);
+    int iconSize = 16;
+
+    m_toolbar->AddTool(wxID_NEW, _("New Alarm"), wxArtProvider::GetBitmap(wxART_PLUS, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
+    m_toolbar->AddTool(wxID_EDIT, _("Edit Alarm"), wxArtProvider::GetBitmap(wxART_EDIT, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
+    m_toolbar->AddTool(wxID_DELETE, _("Delete Alarm"), wxArtProvider::GetBitmap(wxART_MINUS, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
+    m_toolbar->AddSeparator(); // Optional separator for clarity
+    m_toolbar->AddTool(wxID_REFRESH, _("Reset All"), wxArtProvider::GetBitmap(wxART_REDO, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
+    m_toolbar->AddTool(wxID_CLEAR, _("Delete All"), wxArtProvider::GetBitmap(wxART_DELETE, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
+
+    // Force min height
+    m_toolbar->SetMinSize(wxSize(-1, iconSize + 6));
+
+    wxBoxSizer* sizer = (wxBoxSizer*)this->GetSizer();
+    sizer->Prepend(m_toolbar, 0, wxEXPAND | wxALL, 2);
 
     this->GetSizer()->Fit( this );
     this->Layout();
@@ -188,7 +197,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     Bind(wxEVT_TOOL, &WatchdogDialog::OnNew, this, wxID_NEW);
     Bind(wxEVT_TOOL, &WatchdogDialog::OnEdit, this, wxID_EDIT);
     Bind(wxEVT_TOOL, &WatchdogDialog::OnDelete, this, wxID_DELETE);
-}
+    Bind(wxEVT_TOOL, &WatchdogDialog::OnResetAll, this, wxID_REFRESH);
+    Bind(wxEVT_TOOL, &WatchdogDialog::OnDeleteAll, this, wxID_CLEAR);}
 
 WatchdogDialog::~WatchdogDialog()
 {
@@ -255,6 +265,8 @@ void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
     long index = HitTest(pos, flags);
     if(index < 0)
         return;
+
+    m_menualarm = Alarm::s_Alarms[index];
 
     Alarm *alarm = Alarm::s_Alarms[index];
     alarm->m_bEnabled = !alarm->m_bEnabled;
@@ -333,6 +345,8 @@ void WatchdogDialog::OnNew( wxCommandEvent& event )
 
 void WatchdogDialog::OnEdit( wxCommandEvent& event )
 {
+    if(!m_menualarm)
+        return;
     EditAlarmDialog dlg(this, m_menualarm);
     if(dlg.ShowModal() == wxID_OK)
         dlg.Save();
@@ -341,12 +355,16 @@ void WatchdogDialog::OnEdit( wxCommandEvent& event )
 
 void WatchdogDialog::OnReset( wxCommandEvent& event )
 {
+    if(!m_menualarm)
+        return;
     m_menualarm->Reset();
     UpdateAlarms();
 }
 
 void WatchdogDialog::OnDelete( wxCommandEvent& event )
 {
+    if(!m_menualarm)
+        return;
     std::vector<Alarm*>::iterator it = Alarm::s_Alarms.begin();
     while(*it != m_menualarm)
         it++;
@@ -362,9 +380,14 @@ void WatchdogDialog::OnResetAll( wxCommandEvent& event )
 }
 
 void WatchdogDialog::OnDeleteAll( wxCommandEvent& event )
-{
-    Alarm::DeleteAll();
-    UpdateAlarms();
+{   int response = wxMessageBox(_("Are you sure you want to delete all alarms?"), 
+                            _("Confirm Delete All"), 
+                            wxYES_NO | wxICON_WARNING, this);
+                            
+    if (response == wxYES) {                        
+        Alarm::DeleteAll();
+        UpdateAlarms();
+    }
 }
 
 void WatchdogDialog::OnConfiguration( wxCommandEvent& event )
