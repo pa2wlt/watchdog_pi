@@ -188,6 +188,7 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     int buttonHeight = 24;
     btnNew->SetMaxSize(wxSize(-1, buttonHeight));
     btnEdit->SetMaxSize(wxSize(-1, buttonHeight));
+    btnReset->SetMaxSize(wxSize(-1, buttonHeight));
     btnDelete->SetMaxSize(wxSize(-1, buttonHeight));
     btnResetAll->SetMaxSize(wxSize(-1, buttonHeight));
     btnDeleteAll->SetMaxSize(wxSize(-1, buttonHeight));
@@ -204,7 +205,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     buttonPanel->SetMaxSize(wxSize(-1, buttonHeight + 4)); // Small padding included
 
     // Place button bar at the top of the main sizer
-    sizer->Prepend(buttonBar, 0, wxEXPAND | wxALL, 2);
+    buttonPanel->SetSizer(buttonBar);
+    sizer->Prepend(buttonPanel, 0, wxEXPAND | wxALL, 2);
 
     // Set minimum height for the alarm list
     m_lStatus->SetMinSize(wxSize(-1, 150));
