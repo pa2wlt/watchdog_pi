@@ -223,6 +223,16 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 
     this->GetSizer()->Fit( this );
     this->Layout();
+
+    wxSize panelSize = buttonPanel->GetSize();
+
+    // Log to wxWidgets logging system (popup or terminal, depending on how OpenCPN runs)
+    wxLogMessage("Button panel actual size: %d x %d", panelSize.GetWidth(), panelSize.GetHeight());
+
+    // Guaranteed output to terminal if launched from command line
+    printf("DEBUG - Button panel actual size: %d x %d\n", panelSize.GetWidth(), panelSize.GetHeight());
+    fflush(stdout); // Ensure immediate flush of output on MacOS
+
     SetSize(size);
     this->SetSizeHints( 250, 100 );
 #else
