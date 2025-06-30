@@ -183,7 +183,6 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     // Force min height
     m_toolbar->SetMinSize(wxSize(-1, iconSize + 6));
 
-    wxBoxSizer* sizer = (wxBoxSizer*)this->GetSizer();
     sizer->Prepend(m_toolbar, 0, wxEXPAND | wxALL, 2);
 
     this->GetSizer()->Fit( this );
@@ -198,7 +197,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     Bind(wxEVT_TOOL, &WatchdogDialog::OnEdit, this, wxID_EDIT);
     Bind(wxEVT_TOOL, &WatchdogDialog::OnDelete, this, wxID_DELETE);
     Bind(wxEVT_TOOL, &WatchdogDialog::OnResetAll, this, wxID_REFRESH);
-    Bind(wxEVT_TOOL, &WatchdogDialog::OnDeleteAll, this, wxID_CLEAR);}
+    Bind(wxEVT_TOOL, &WatchdogDialog::OnDeleteAll, this, wxID_CLEAR);
+}
 
 WatchdogDialog::~WatchdogDialog()
 {
