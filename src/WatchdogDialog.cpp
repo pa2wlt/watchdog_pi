@@ -153,6 +153,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     m_lStatus->InsertColumn(ALARM_TYPE, "T");
     m_lStatus->InsertColumn(ALARM_STATUS, "S");
     m_lStatus->InsertColumn(ALARM_COUNT, "C");
+    
+    m_lStatus->Bind(wxEVT_LIST_ITEM_SELECTED, &WatchdogDialog::OnItemSelected, this);
 
 #ifndef __OCPN__ANDROID__
     m_lStatus->SetColumnWidth(ALARM_ENABLED, wxLIST_AUTOSIZE);
@@ -183,6 +185,7 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     buttonBar->Add(btnNew, 0, wxALL, 2);
     buttonBar->Add(btnEdit, 0, wxALL, 2);
     buttonBar->Add(btnDelete, 0, wxALL, 2);
+    buttonBar->Add(btnReset, 0, wxALL, 2);
     buttonBar->Add(btnResetAll, 0, wxALL, 2);
     buttonBar->Add(btnDeleteAll, 0, wxALL, 2);
 
@@ -193,6 +196,7 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     btnNew->Bind(wxEVT_BUTTON, &WatchdogDialog::OnNew, this);
     btnEdit->Bind(wxEVT_BUTTON, &WatchdogDialog::OnEdit, this);
     btnDelete->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDelete, this);
+    btnRest->Bind(wxEVT_BUTTON, &WatchdogDialog::OnReset, this);
     btnResetAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnResetAll, this);
     btnDeleteAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDeleteAll, this);
 
@@ -228,6 +232,8 @@ WatchdogDialog::~WatchdogDialog()
 
 void WatchdogDialog::UpdateAlarms()
 {
+    m_menualarm = nullptr; // Clear selection on update
+
     while((int)Alarm::s_Alarms.size() > m_lStatus->GetItemCount()) {
         wxListItem item;
         m_lStatus->InsertItem(0, item);
@@ -247,6 +253,14 @@ void WatchdogDialog::UpdateAlarms()
     }
 }
 
+void WatchdogDialog::OnItemSelected(wxListEvent& event)
+{
+    long index = event.GetIndex();
+    if(index >= 0 && (unsigned)index < Alarm::s_Alarms.size())
+        m_menualarm = Alarm::s_Alarms[index];
+    else
+        m_menualarm = nullptr;
+}
 void WatchdogDialog::UpdateStatus(int index)
 {
     Alarm *alarm = Alarm::s_Alarms[index];
@@ -356,7 +370,7 @@ void WatchdogDialog::OnNew( wxCommandEvent& event )
 
 void WatchdogDialog::OnEdit( wxCommandEvent& event )
 {
-    if(!m_menualarm)
+    if(!m_menualarm || Alarm::s_Alarms.empty())
         return;
     EditAlarmDialog dlg(this, m_menualarm);
     if(dlg.ShowModal() == wxID_OK)
@@ -366,7 +380,7 @@ void WatchdogDialog::OnEdit( wxCommandEvent& event )
 
 void WatchdogDialog::OnReset( wxCommandEvent& event )
 {
-    if(!m_menualarm)
+    if(!m_menualarm || Alarm::s_Alarms.empty())
         return;
     m_menualarm->Reset();
     UpdateAlarms();
@@ -374,13 +388,14 @@ void WatchdogDialog::OnReset( wxCommandEvent& event )
 
 void WatchdogDialog::OnDelete( wxCommandEvent& event )
 {
-    if(!m_menualarm)
+    if(!m_menualarm || Alarm::s_Alarms.empty())
         return;
     std::vector<Alarm*>::iterator it = Alarm::s_Alarms.begin();
     while(*it != m_menualarm)
         it++;
     Alarm::s_Alarms.erase(it);
     delete m_menualarm;
+    m_menualarm = nullptr;
     UpdateAlarms();
 }
 
