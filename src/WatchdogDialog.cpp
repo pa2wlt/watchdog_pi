@@ -212,13 +212,14 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 
     // Add button panel to the main sizer
     sizer->Prepend(buttonBarPanel, 0, wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 2);
+ 
 
     // Set distinct color for the alarm list to visualize space
     m_lStatus->SetBackgroundColour(*wxBLUE);
 
     // Ensure the list fills all remaining space
     sizer->Add(m_lStatus, 1, wxEXPAND | wxALL, 2);
-
+ 
     // Bind button events
     btnNew->Bind(wxEVT_BUTTON, &WatchdogDialog::OnNew, this);
     btnEdit->Bind(wxEVT_BUTTON, &WatchdogDialog::OnEdit, this);
@@ -227,7 +228,12 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     btnResetAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnResetAll, this);
     btnDeleteAll->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDeleteAll, this);
 
-    // Apply layout updates
+    printf("DEBUG - Before layout: Button bar panel: %d x %d | List: %d x %d | Button New: %d x %d\n",
+        panelSize.GetWidth(), panelSize.GetHeight(),
+        listSize.GetWidth(), listSize.GetHeight(),
+        btnSize.GetWidth(), btnSize.GetHeight());
+
+        // Apply layout updates
     this->Layout();
 
     // Hard debug after layout
@@ -235,18 +241,13 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     wxSize listSize = m_lStatus->GetSize();
     wxSize btnSize = btnNew->GetSize();
 
-    wxLogMessage("DEBUG - Button bar panel actual size: %d x %d", panelSize.GetWidth(), panelSize.GetHeight());
-    wxLogMessage("DEBUG - Alarm list actual size: %d x %d", listSize.GetWidth(), listSize.GetHeight());
-    wxLogMessage("DEBUG - Button 'New' actual size: %d x %d", btnSize.GetWidth(), btnSize.GetHeight());
-
     printf("DEBUG - Button bar panel: %d x %d | List: %d x %d | Button New: %d x %d\n",
         panelSize.GetWidth(), panelSize.GetHeight(),
         listSize.GetWidth(), listSize.GetHeight(),
         btnSize.GetWidth(), btnSize.GetHeight());
     fflush(stdout);
 
-
-    SetSize(size);
+//    SetSize(size);
     this->SetSizeHints(250, 100);
 #else
     SetSize(size);
