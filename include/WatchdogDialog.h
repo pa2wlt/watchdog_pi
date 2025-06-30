@@ -55,9 +55,9 @@ public:
     void OnConfiguration( wxCommandEvent& event );
     void OnItemSelected(wxListEvent& event);
     
-     wxToolBar* m_toolbar;
+    wxButton* m_bNewAlarm;
 
-private:
+    private:
     long HitTest(wxPoint pos, int);
     watchdog_pi &m_watchdog_pi;
     Alarm *m_menualarm;
