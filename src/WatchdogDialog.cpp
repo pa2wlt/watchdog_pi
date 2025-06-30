@@ -202,8 +202,10 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     buttonBar->Add(btnDeleteAll, 0, wxALL, 0);
 
     // Limit maximum height of the entire button bar
-    buttonPanel->SetMaxSize(wxSize(-1, buttonHeight + 4)); // Small padding included
-
+    int totalHeight = 30; // Totale hoogte van de buttonbalk
+    buttonPanel->SetMinSize(wxSize(-1, totalHeight));
+    buttonPanel->SetMaxSize(wxSize(-1, totalHeight));
+    
     // Place button bar at the top of the main sizer
     buttonPanel->SetSizer(buttonBar);
     sizer->Prepend(buttonPanel, 0, wxEXPAND | wxALL, 2);
