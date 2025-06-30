@@ -174,7 +174,7 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 #else
     SetSize(size);
 #endif
-
+m_bNewAlarm->Bind(wxEVT_BUTTON, &WatchdogDialog::OnNew, this);
 }
 
 WatchdogDialog::~WatchdogDialog()
