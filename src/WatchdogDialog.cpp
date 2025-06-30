@@ -171,7 +171,7 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 
     m_toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL);
 
-    int iconSize = 16;
+    int iconSize = 32;
 
     m_toolbar->AddTool(wxID_NEW, _("New Alarm"), wxArtProvider::GetBitmap(wxART_PLUS, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
     m_toolbar->AddTool(wxID_EDIT, _("Edit Alarm"), wxArtProvider::GetBitmap(wxART_EDIT, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
@@ -179,10 +179,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     m_toolbar->AddSeparator(); // Optional separator for clarity
     m_toolbar->AddTool(wxID_REFRESH, _("Reset All"), wxArtProvider::GetBitmap(wxART_REDO, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
     m_toolbar->AddTool(wxID_CLEAR, _("Delete All"), wxArtProvider::GetBitmap(wxART_DELETE, wxART_TOOLBAR, wxSize(iconSize, iconSize)));
-
-    // Force min height
-    m_toolbar->SetMinSize(wxSize(-1, iconSize + 6));
-
+    m_toolbar->Realize();
+    m_toolbar->SetMaxSize(wxSize(-1, iconSize + 6));
     sizer->Prepend(m_toolbar, 0, wxEXPAND | wxALL, 2);
 
     this->GetSizer()->Fit( this );
