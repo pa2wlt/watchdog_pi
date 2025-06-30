@@ -174,7 +174,14 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 #else
     SetSize(size);
 #endif
-m_bNewAlarm->Bind(wxEVT_BUTTON, &WatchdogDialog::OnNew, this);
+
+wxLogMessage("DEBUG: m_bNewAlarm = %p", m_bNewAlarm);
+
+if (m_bNewAlarm) {
+    m_bNewAlarm->Bind(wxEVT_BUTTON, &WatchdogDialog::OnNew, this);
+} else {
+    wxLogMessage("ERROR: m_bNewAlarm is nullptr at bind time!");
+}
 }
 
 WatchdogDialog::~WatchdogDialog()

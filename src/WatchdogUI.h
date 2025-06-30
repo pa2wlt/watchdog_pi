@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -10,20 +10,20 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-#include <wx/listctrl.h>
+#include <wx/button.h>
+#include <wx/string.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
 #include <wx/gdicmn.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/string.h>
 #include <wx/sizer.h>
-#include <wx/bitmap.h>
-#include <wx/image.h>
-#include <wx/icon.h>
+#include <wx/listctrl.h>
 #include <wx/menu.h>
 #include <wx/dialog.h>
 #include <wx/stattext.h>
-#include <wx/button.h>
 #include <wx/radiobut.h>
 #include <wx/statbox.h>
 #include <wx/fontpicker.h>
@@ -37,16 +37,15 @@
 #include <wx/radiobox.h>
 #include <wx/statline.h>
 #include <wx/notebook.h>
-#include <wx/scrolwin.h>
 
 #include "wxWTranslateCatalog.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
-#define GPSCOURSE 1000
-#define GPSFIX 1001
-#define AISGUARDZONE 1002
-#define ANCHORALARM 1003
+#define GPSCOURSE 6000
+#define GPSFIX 6001
+#define AISGUARDZONE 6002
+#define ANCHORALARM 6003
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class WatchdogDialogBase
@@ -56,6 +55,8 @@ class WatchdogDialogBase : public wxDialog
 	private:
 
 	protected:
+		wxButton* m_bNewAlarm;
+		wxButton* m_bResetAll;
 		wxMenu* m_Menu;
 		wxMenuItem* m_Edit;
 		wxMenuItem* m_Reset;
@@ -77,7 +78,7 @@ class WatchdogDialogBase : public wxDialog
 	public:
 		wxListCtrl* m_lStatus;
 
-		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("WatchDog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL );
+		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("WatchDog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 409,142 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL );
 
 		~WatchdogDialogBase();
 
@@ -190,7 +191,6 @@ class EditAlarmDialogBase : public wxDialog
 
 	protected:
 		wxFlexGridSizer* m_fgSizer;
-        wxScrolledWindow *m_scrollWin;
 		wxCheckBox* m_cbNoData;
 		wxStaticText* m_staticText56;
 		wxSpinCtrl* m_sDelay;
@@ -436,8 +436,8 @@ class DepthPanel : public wxPanel
 
 	public:
 		wxChoice* m_cMode;
-        wxChoice* m_cUnits;
 		wxTextCtrl* m_tDepth;
+		wxChoice* m_cUnits;
 
 		DepthPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
@@ -577,28 +577,6 @@ class RudderPanel : public wxPanel
 		RudderPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 		~RudderPanel();
-
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class XTEPanel
-///////////////////////////////////////////////////////////////////////////////
-class XTEPanel : public wxPanel
-{
-	private:
-
-	protected:
-		wxStaticText* m_staticText33;
-		wxStaticText* m_staticText35;
-		wxStaticText* m_staticText36;
-
-	public:
-		wxSpinCtrlDouble* m_sXTELimit;
-		wxChoice* m_cXTEUnits;
-
-		XTEPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-
-		~XTEPanel();
 
 };
 

@@ -1,22 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
 #include "WatchdogUI.h"
-#include "ocpn_plugin.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
 WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-    wxFont *pFont = GetOCPNScaledFont_PlugIn(_("Dialog"));
-    wxFont dFont = *pFont;
-    SetFont(dFont);
-
-    this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
+	this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
 
 	wxFlexGridSizer* fgSizer8;
 	fgSizer8 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -25,66 +20,53 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->SetFlexibleDirection( wxBOTH );
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 
-	m_lStatus = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ),
-                                wxLC_NO_HEADER | wxLC_REPORT | wxLC_HRULES );
-    m_lStatus->SetFont(dFont);     // Default
-    m_lStatus->SetMinSize( wxSize( 300,50 ) );
+	wxBoxSizer* bSizer1;
+	bSizer1 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_bNewAlarm = new wxButton( this, wxID_ANY, _("New"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer1->Add( m_bNewAlarm, 0, wxALL, 5 );
+
+	m_bResetAll = new wxButton( this, wxID_ANY, _("Reset All"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer1->Add( m_bResetAll, 0, wxALL, 5 );
+
+
+	fgSizer8->Add( bSizer1, 0, wxALL, 2 );
+
+	m_lStatus = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxLC_NO_HEADER|wxLC_REPORT );
+	m_lStatus->SetFont( wxFont( 9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Arial") ) );
+	m_lStatus->SetMinSize( wxSize( 300,100 ) );
 
 	fgSizer8->Add( m_lStatus, 1, wxALL|wxEXPAND, 5 );
 
 
 	this->SetSizer( fgSizer8 );
 	this->Layout();
-	fgSizer8->Fit( this );
 	m_Menu = new wxMenu();
 	wxMenuItem* m_New;
-    wxFont *sFont = GetOCPNScaledFont_PlugIn(_("Menu"));
-
-    m_New = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("New") ) , wxEmptyString, wxITEM_NORMAL );
-#ifdef __OCPN__ANDROID__
-    m_New->SetFont(*sFont);
-#endif
-    m_Menu->Append( m_New );
+	m_New = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("New") ) , wxEmptyString, wxITEM_NORMAL );
+	m_Menu->Append( m_New );
 
 	m_Edit = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("Edit") ) , wxEmptyString, wxITEM_NORMAL );
-#ifdef __OCPN__ANDROID__
-    m_Edit->SetFont(*sFont);
-#endif
 	m_Menu->Append( m_Edit );
 
 	m_Reset = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("Reset") ) , wxEmptyString, wxITEM_NORMAL );
-#ifdef __OCPN__ANDROID__
-    m_Reset->SetFont(*sFont);
-#endif
 	m_Menu->Append( m_Reset );
 
 	m_Delete = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("Delete") ) , wxEmptyString, wxITEM_NORMAL );
-#ifdef __OCPN__ANDROID__
-    m_Delete->SetFont(*sFont);
-#endif
 	m_Menu->Append( m_Delete );
 
 	m_Menu->AppendSeparator();
 
 	wxMenuItem* m_ResetAll;
 	m_ResetAll = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("Reset All") ) , wxEmptyString, wxITEM_NORMAL );
-#ifdef __OCPN__ANDROID__
-    m_ResetAll->SetFont(*sFont);
-#endif
 	m_Menu->Append( m_ResetAll );
 
 	wxMenuItem* m_DeleteAll;
 	m_DeleteAll = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("DeleteAll") ) , wxEmptyString, wxITEM_NORMAL );
-#ifdef __OCPN__ANDROID__
-    m_DeleteAll->SetFont(*sFont);
-#endif
 	m_Menu->Append( m_DeleteAll );
 
 	wxMenuItem* m_Configuration;
 	m_Configuration = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("Configuration") ) , wxEmptyString, wxITEM_NORMAL );
-#ifdef __OCPN__ANDROID__
-    m_Configuration->SetFont(*sFont);
-#endif
 	m_Menu->Append( m_Configuration );
 
 	this->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( WatchdogDialogBase::WatchdogDialogBaseOnContextMenu ), NULL, this );
@@ -217,13 +199,8 @@ WatchdogPropertiesDialogBase::~WatchdogPropertiesDialogBase()
 
 ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-    wxFont *pFont = GetOCPNScaledFont_PlugIn(_("Dialog"));
-    wxFont dFont = *pFont;
-    SetFont(dFont);
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 
-    this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-
-#ifndef __OCPN__ANDROID__
 	wxFlexGridSizer* fgSizer4;
 	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer4->SetFlexibleDirection( wxBOTH );
@@ -286,86 +263,12 @@ ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID i
 
 	this->Centre( wxBOTH );
 
-#else
-    wxFlexGridSizer* fgSizer4;
-	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
-	fgSizer4->SetFlexibleDirection( wxBOTH );
-	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	wxStaticBoxSizer* sbSizer41;
-	sbSizer41 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("General Setup") ), wxVERTICAL );
-
-	wxFlexGridSizer* fgSizer241;
-	fgSizer241 = new wxFlexGridSizer( 0, 1, 0, 0 );
-	fgSizer241->SetFlexibleDirection( wxBOTH );
-	fgSizer241->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	m_rbAlways = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer241->Add( m_rbAlways, 0, wxALL, 5 );
-
-	m_rbOnce = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enabled after first time Watchdog Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer241->Add( m_rbOnce, 0, wxALL, 5 );
-
-	m_rbVisible = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enabled only if Watchdog Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer241->Add( m_rbVisible, 0, wxALL, 5 );
-
-	m_rbNever = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Disable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer241->Add( m_rbNever, 0, wxALL, 5 );
-
-
-	sbSizer41->Add( fgSizer241, 1, wxEXPAND, 5 );
-
-
-	fgSizer4->Add( sbSizer41, 1, wxEXPAND, 5 );
-
-	wxFlexGridSizer* fgSizer11;
-	fgSizer11 = new wxFlexGridSizer( 1, 0, 0, 0 );
-	fgSizer11->AddGrowableCol( 1 );
-	fgSizer11->SetFlexibleDirection( wxBOTH );
-	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	m_staticText61 = new wxStaticText( this, wxID_ANY, _("Font"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText61->Wrap( -1 );
-	fgSizer11->Add( m_staticText61, 0, wxALL, 5 );
-    m_staticText61->Hide();
-
-	m_font = new wxFontPickerCtrl( this, wxID_ANY, wxNullFont, wxDefaultPosition, wxDefaultSize, wxFNTP_DEFAULT_STYLE );
-	m_font->SetMaxPointSize( 100 );
-	fgSizer11->Add( m_font, 0, wxALL, 5 );
-    m_font->SetSize(1,1);
-
-	m_sdbSizer1 = new wxStdDialogButtonSizer();
-	m_sdbSizer1OK = new wxButton( this, wxID_OK );
-	m_sdbSizer1->AddButton( m_sdbSizer1OK );
-	m_sdbSizer1->Realize();
-
-	fgSizer11->Add( m_sdbSizer1, 0, wxALIGN_RIGHT|wxBOTTOM|wxEXPAND|wxTOP, 5 );
-	fgSizer4->Add( fgSizer11, 1, wxEXPAND, 5 );
-	this->SetSizer( fgSizer4 );
-	fgSizer4->Fit( this );
-
-    wxRect tbRect = GetMasterToolbarRect();
-    wxPoint pNew;
-    pNew.x = tbRect.x + tbRect.width + 4;
-    pNew.y = tbRect.x + tbRect.width + 4;  // Reasonable spot
-    Move( pNew);
-
-    int widthAvail =
-        GetCanvasByIndex(0)->GetClientSize().x - pNew.x;
-    wxSize sizef;
-    sizef.x = widthAvail;
-    sizef.y = 10 * GetCharHeight();   //Allow a few lines.
-    SetSize(sizef);
-
-#endif
-
-    // Connect Events
+	// Connect Events
 	m_rbAlways->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ConfigurationDialogBase::OnEnabled ), NULL, this );
 	m_rbOnce->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ConfigurationDialogBase::OnEnabled ), NULL, this );
 	m_rbVisible->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ConfigurationDialogBase::OnEnabled ), NULL, this );
 	m_rbNever->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ConfigurationDialogBase::OnEnabled ), NULL, this );
 	m_font->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( ConfigurationDialogBase::OnFont ), NULL, this );
-
 }
 
 ConfigurationDialogBase::~ConfigurationDialogBase()
@@ -382,9 +285,7 @@ ConfigurationDialogBase::~ConfigurationDialogBase()
 NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-    wxFont *dFont = GetOCPNScaledFont_PlugIn(_("Dialog"));
-    SetFont(*dFont);
-    //this->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+	this->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_LIGHT, false, wxEmptyString ) );
 
 	wxFlexGridSizer* fgSizer40;
 	fgSizer40 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -393,8 +294,8 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer40->SetFlexibleDirection( wxBOTH );
 	fgSizer40->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 
-	m_lAlarmType = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL );
-    m_lAlarmType->SetFont(*dFont);
+	m_lAlarmType = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER|wxLC_REPORT|wxLC_SINGLE_SEL );
+	m_lAlarmType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer40->Add( m_lAlarmType, 0, wxALL|wxEXPAND, 5 );
 
@@ -410,24 +311,9 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 
 	this->SetSizer( fgSizer40 );
 	this->Layout();
+	fgSizer40->Fit( this );
 
-#ifdef __OCPN__ANDROID__
-    wxRect tbRect = GetMasterToolbarRect();
-    wxPoint pNew;
-    pNew.x = tbRect.x + tbRect.width + 4;
-    pNew.y = tbRect.x + tbRect.width + 4;  // Reasonable spot
-    Move( pNew);
-
-    int widthAvail =
-        GetCanvasByIndex(0)->GetClientSize().x - pNew.x;
-    wxSize sizef;
-    sizef.x = widthAvail;
-    sizef.y = 10 * GetCharHeight();   //Allow a few lines.
-    SetSize(sizef);
-#else
-    fgSizer40->Fit( this );
 	this->Centre( wxBOTH );
-#endif
 
 	// Connect Events
 	m_lAlarmType->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::OnDoubleClick ), NULL, this );
@@ -444,130 +330,13 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 
-#ifndef __OCPN__ANDROID__
-    m_fgSizer = new wxFlexGridSizer( 0, 1, 0, 0 );
-    m_fgSizer->AddGrowableRow( 0 );
-    m_fgSizer->SetFlexibleDirection( wxBOTH );
-    m_fgSizer->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-    wxStaticBoxSizer* sbSizer4;
-    sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Alarm Action") ), wxVERTICAL );
-
-    wxFlexGridSizer* fgSizer6;
-    fgSizer6 = new wxFlexGridSizer( 0, 2, 0, 0 );
-    fgSizer6->AddGrowableCol( 1 );
-    fgSizer6->SetFlexibleDirection( wxBOTH );
-    fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-    m_cbSound = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Sound"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer6->Add( m_cbSound, 0, wxALL, 5 );
-
-    m_fpSound = new wxFilePickerCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxT("/initrd.img"), _("Select a file"), _("Wav Files (*.wav)|*.WAV;*.wav|All Files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
-    fgSizer6->Add( m_fpSound, 0, wxALL|wxEXPAND, 5 );
-
-    m_cbCommand = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Command"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer6->Add( m_cbCommand, 0, wxALL, 5 );
-
-    m_tCommand = new wxTextCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-#ifdef __WXGTK__
-    if ( !m_tCommand->HasFlag( wxTE_MULTILINE ) )
-    {
-        m_tCommand->SetMaxLength( 255 );
-    }
-#else
-    m_tCommand->SetMaxLength( 255 );
-#endif
-    fgSizer6->Add( m_tCommand, 0, wxALL|wxEXPAND, 5 );
-
-    m_cbMessageBox = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Message Box"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer6->Add( m_cbMessageBox, 0, wxALL, 5 );
-
-    m_cbNoData = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Alarm if no Data"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer6->Add( m_cbNoData, 0, wxALL, 5 );
-
-    m_cbRepeat = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Repeat Alarm after seconds"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer6->Add( m_cbRepeat, 0, wxALL, 5 );
-
-    m_sRepeatSeconds = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000, 60 );
-    fgSizer6->Add( m_sRepeatSeconds, 0, wxALL, 5 );
-
-    m_staticText56 = new wxStaticText( sbSizer4->GetStaticBox(), wxID_ANY, _("Condition triggered for"), wxDefaultPosition, wxDefaultSize, 0 );
-    m_staticText56->Wrap( -1 );
-    fgSizer6->Add( m_staticText56, 0, wxALL, 5 );
-
-    wxFlexGridSizer* fgSizer37;
-    fgSizer37 = new wxFlexGridSizer( 0, 2, 0, 0 );
-    fgSizer37->SetFlexibleDirection( wxBOTH );
-    fgSizer37->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-    m_sDelay = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 0, 3600, 0 );
-    fgSizer37->Add( m_sDelay, 0, wxALL, 5 );
-
-    m_staticText57 = new wxStaticText( sbSizer4->GetStaticBox(), wxID_ANY, _("Seconds"), wxDefaultPosition, wxDefaultSize, 0 );
-    m_staticText57->Wrap( -1 );
-    fgSizer37->Add( m_staticText57, 0, wxALL, 5 );
-
-
-    fgSizer6->Add( fgSizer37, 1, wxEXPAND, 5 );
-
-    m_cbAutoReset = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Automatically Reset"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer6->Add( m_cbAutoReset, 0, wxALL, 5 );
-
-    m_cbgfxEnabled = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Graphics Enabled"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer6->Add( m_cbgfxEnabled, 0, wxALL, 5 );
-
-    m_bTest = new wxButton( sbSizer4->GetStaticBox(), wxID_ANY, _("Test"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer6->Add( m_bTest, 0, wxALL, 5 );
-
-
-    sbSizer4->Add( fgSizer6, 1, wxEXPAND, 5 );
-
-
-    m_fgSizer->Add( sbSizer4, 1, wxEXPAND, 5 );
-
-    wxFlexGridSizer* fgSizer15;
-    fgSizer15 = new wxFlexGridSizer( 1, 0, 0, 0 );
-    fgSizer15->AddGrowableCol( 0 );
-    fgSizer15->SetFlexibleDirection( wxBOTH );
-    fgSizer15->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-    m_button6 = new wxButton( this, wxID_ANY, _("Information"), wxDefaultPosition, wxDefaultSize, 0 );
-    fgSizer15->Add( m_button6, 0, wxALL, 5 );
-
-    m_sdbSizer4 = new wxStdDialogButtonSizer();
-    m_sdbSizer4OK = new wxButton( this, wxID_OK );
-    m_sdbSizer4->AddButton( m_sdbSizer4OK );
-    m_sdbSizer4Cancel = new wxButton( this, wxID_CANCEL );
-    m_sdbSizer4->AddButton( m_sdbSizer4Cancel );
-    m_sdbSizer4->Realize();
-
-    fgSizer15->Add( m_sdbSizer4, 1, wxEXPAND, 5 );
-    m_fgSizer->Add( fgSizer15, 1, wxEXPAND, 5 );
-
-    this->SetSizer( m_fgSizer );
-    this->Layout();
-    m_fgSizer->Fit( this );
-    this->Centre( wxBOTH );
-
-#else
-    m_scrollWin = new wxScrolledWindow(
-            this, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxVSCROLL | wxHSCROLL);
-    m_scrollWin->SetScrollRate(1, 1);
-
-    wxBoxSizer *BoxSizerMainPanel = new wxBoxSizer(wxVERTICAL);
-    SetSizer(BoxSizerMainPanel);
-
-    BoxSizerMainPanel->Add(m_scrollWin, 1,  wxEXPAND | wxALL, 0);
-
-    m_fgSizer = new wxFlexGridSizer( 0, 1, 0, 0 );
+	m_fgSizer = new wxFlexGridSizer( 0, 1, 0, 0 );
 	m_fgSizer->AddGrowableRow( 0 );
 	m_fgSizer->SetFlexibleDirection( wxBOTH );
 	m_fgSizer->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-    m_scrollWin->SetSizer(m_fgSizer);
 
-    wxStaticBoxSizer* sbSizer4;
-	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( m_scrollWin, wxID_ANY, _("Alarm Action") ), wxVERTICAL );
-    m_fgSizer->Add( sbSizer4, 0, wxEXPAND, 5 );
+	wxStaticBoxSizer* sbSizer4;
+	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Alarm Action") ), wxVERTICAL );
 
 	wxFlexGridSizer* fgSizer6;
 	fgSizer6 = new wxFlexGridSizer( 0, 2, 0, 0 );
@@ -623,6 +392,7 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 	m_staticText57->Wrap( -1 );
 	fgSizer37->Add( m_staticText57, 0, wxALL, 5 );
 
+
 	fgSizer6->Add( fgSizer37, 1, wxEXPAND, 5 );
 
 	m_cbAutoReset = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Automatically Reset"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -633,44 +403,41 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 
 	m_bTest = new wxButton( sbSizer4->GetStaticBox(), wxID_ANY, _("Test"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_bTest, 0, wxALL, 5 );
+
+
 	sbSizer4->Add( fgSizer6, 1, wxEXPAND, 5 );
 
+
+	m_fgSizer->Add( sbSizer4, 1, wxEXPAND, 5 );
+
 	wxFlexGridSizer* fgSizer15;
-	fgSizer15 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer15 = new wxFlexGridSizer( 1, 0, 0, 0 );
 	fgSizer15->AddGrowableCol( 0 );
 	fgSizer15->SetFlexibleDirection( wxBOTH );
 	fgSizer15->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-    m_fgSizer->Add( fgSizer15, 0, wxEXPAND, 5 );
 
-	m_button6 = new wxButton( m_scrollWin, wxID_ANY, _("Information"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_button6 = new wxButton( this, wxID_ANY, _("Information"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer15->Add( m_button6, 0, wxALL, 5 );
 
-    wxStaticLine* staticline4;
-    staticline4 =
-            new wxStaticLine(m_scrollWin, wxID_ANY, wxDefaultPosition,
-                             wxDefaultSize, wxLI_HORIZONTAL);
-    m_fgSizer->Add(staticline4, 0, wxEXPAND | wxALL, 50);
+	m_sdbSizer4 = new wxStdDialogButtonSizer();
+	m_sdbSizer4OK = new wxButton( this, wxID_OK );
+	m_sdbSizer4->AddButton( m_sdbSizer4OK );
+	m_sdbSizer4Cancel = new wxButton( this, wxID_CANCEL );
+	m_sdbSizer4->AddButton( m_sdbSizer4Cancel );
+	m_sdbSizer4->Realize();
 
-    wxBoxSizer *bSizer = new wxBoxSizer(wxHORIZONTAL);
-    m_fgSizer->Add( bSizer, 1 );
+	fgSizer15->Add( m_sdbSizer4, 1, wxEXPAND, 5 );
 
-	m_sdbSizer4OK = new wxButton( m_scrollWin, wxID_OK );
-	bSizer->Add( m_sdbSizer4OK );
-    bSizer->AddSpacer( 5 * GetCharWidth());
-	m_sdbSizer4Cancel = new wxButton( m_scrollWin, wxID_CANCEL );
-	bSizer->Add( m_sdbSizer4Cancel );
 
-    wxStaticLine* staticline5;
-    staticline5 =
-            new wxStaticLine(m_scrollWin, wxID_ANY, wxDefaultPosition,
-                             wxDefaultSize, wxLI_HORIZONTAL);
-    m_fgSizer->Add(staticline5, 0, wxEXPAND | wxALL, 50);
+	m_fgSizer->Add( fgSizer15, 1, wxEXPAND, 5 );
 
-    this->Layout();
-    m_fgSizer->Fit( this );
+
+	this->SetSizer( m_fgSizer );
+	this->Layout();
+	m_fgSizer->Fit( this );
+
 	this->Centre( wxBOTH );
 
-#endif
 	// Connect Events
 	m_bTest->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EditAlarmDialogBase::OnTestAlarm ), NULL, this );
 	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EditAlarmDialogBase::OnInformation ), NULL, this );
@@ -827,18 +594,10 @@ CoursePanel::CoursePanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	fgSizer38->SetFlexibleDirection( wxBOTH );
 	fgSizer38->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
-	m_rbGPSCourse = new wxRadioButton( this, wxID_ANY, _("Course Over Ground"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_rbGPSCourse->SetToolTip(_(
-		"Use Course Over Ground (COG) for course deviation calculation.\n"
-		"This represents the actual path the boat is traveling over the seafloor,\n"
-		"including effects of current and leeway."));
+	m_rbGPSCourse = new wxRadioButton( this, wxID_ANY, _("GPS Course"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer38->Add( m_rbGPSCourse, 0, wxALL, 5 );
 
-	m_rbHeading = new wxRadioButton( this, wxID_ANY, _("Heading"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_rbHeading->SetToolTip(_(
-		"Use compass/heading sensor (HDM) for course deviation calculation.\n"
-		"This represents the direction the boat is pointing,\n"
-		"regardless of actual track due to current or leeway."));
+	m_rbHeading = new wxRadioButton( this, wxID_ANY, _("Heading Sensor"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer38->Add( m_rbHeading, 0, wxALL, 5 );
 
 
@@ -887,7 +646,7 @@ SpeedPanel::SpeedPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_staticText44->Wrap( -1 );
 	fgSizer14->Add( m_staticText44, 0, wxALL, 5 );
 
-	m_tSpeed = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxSize(80,-1), 0 );
+	m_tSpeed = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
 	#ifdef __WXGTK__
 	if ( !m_tSpeed->HasFlag( wxTE_MULTILINE ) )
 	{
@@ -1074,7 +833,7 @@ WeatherPanelBase::WeatherPanelBase( wxWindow* parent, wxWindowID id, const wxPoi
 	m_staticText511->Wrap( -1 );
 	fgSizer14->Add( m_staticText511, 0, wxALL, 5 );
 
-	m_tValue = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1010"), wxDefaultPosition, wxSize(80,-1), 0 );
+	m_tValue = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1010"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer14->Add( m_tValue, 0, wxALL, 5 );
 
 	m_stUnits = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("mBar/C/%"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1234,7 +993,7 @@ DepthPanel::DepthPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_staticText44->Wrap( -1 );
 	fgSizer14->Add( m_staticText44, 0, wxALL, 5 );
 
-	m_tDepth = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxSize(80,-1), 0 );
+	m_tDepth = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
 	#ifdef __WXGTK__
 	if ( !m_tDepth->HasFlag( wxTE_MULTILINE ) )
 	{
@@ -1310,7 +1069,7 @@ LandFallPanel::LandFallPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	m_rbDistance = new wxRadioButton( this, wxID_ANY, _("GPS fix is <"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer10->Add( m_rbDistance, 0, wxALL, 5 );
 
-	m_tDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxSize(80,-1), 0 );
+	m_tDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
 	#ifdef __WXGTK__
 	if ( !m_tDistance->HasFlag( wxTE_MULTILINE ) )
 	{
@@ -1379,7 +1138,7 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	m_rbDistance = new wxRadioButton( this, GPSFIX, _("GPS fix is <"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer10->Add( m_rbDistance, 0, wxALL, 5 );
 
-	m_tDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxSize(80,-1), 0 );
+	m_tDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
 	#ifdef __WXGTK__
 	if ( !m_tDistance->HasFlag( wxTE_MULTILINE ) )
 	{
@@ -1726,50 +1485,5 @@ RudderPanel::RudderPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 }
 
 RudderPanel::~RudderPanel()
-{
-}
-
-XTEPanel::XTEPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
-{
-	wxFlexGridSizer* fgSizer23;
-	fgSizer23 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer23->SetFlexibleDirection( wxBOTH );
-	fgSizer23->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	m_staticText33 = new wxStaticText( this, wxID_ANY, _("XTE Limit"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText33->Wrap( -1 );
-	fgSizer23->Add( m_staticText33, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-
-	wxFlexGridSizer* fgSizer24;
-	fgSizer24 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer24->SetFlexibleDirection( wxBOTH );
-	fgSizer24->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	m_sXTELimit = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0.1, 1000, 100, 0.1 );
-	m_sXTELimit->SetDigits( 1 );
-	fgSizer24->Add( m_sXTELimit, 0, wxALL, 5 );
-
-	wxString m_cXTEUnitsChoices[] = { _("meters"), _("nautical miles") };
-	int m_cXTEUnitsNChoices = sizeof( m_cXTEUnitsChoices ) / sizeof( wxString );
-	m_cXTEUnits = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cXTEUnitsNChoices, m_cXTEUnitsChoices, 0 );
-	m_cXTEUnits->SetSelection( 0 );
-	fgSizer24->Add( m_cXTEUnits, 0, wxALL, 5 );
-
-	fgSizer23->Add( fgSizer24, 1, wxEXPAND, 5 );
-
-	m_staticText35 = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText35->Wrap( -1 );
-	fgSizer23->Add( m_staticText35, 0, wxALL, 5 );
-
-	m_staticText36 = new wxStaticText( this, wxID_ANY, _("Alerts when boat drifts outside planned track corridor.\nRequires waypoint navigation.\nUses XTE sentence for cross-track error, RMB/ABF for bearing/distance."), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText36->Wrap( -1 );
-	fgSizer23->Add( m_staticText36, 0, wxALL|wxALIGN_LEFT, 5 );
-
-	this->SetSizer( fgSizer23 );
-	this->Layout();
-	fgSizer23->Fit( this );
-}
-
-XTEPanel::~XTEPanel()
 {
 }
