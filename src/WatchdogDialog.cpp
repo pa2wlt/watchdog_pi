@@ -171,36 +171,31 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 #ifndef __OCPN__ANDROID__
    wxBoxSizer* sizer = (wxBoxSizer*)this->GetSizer();
 
-    // Create a panel to contain the button bar
-    wxPanel* buttonPanel = new wxPanel(this);
+    // Create colored panel for the button bar (visually debug layout)
+    wxPanel* buttonBarPanel = new wxPanel(this);
+    buttonBarPanel->SetBackgroundColour(*wxRED); // Red background for clear visibility
 
-    // Create horizontal sizer for the buttons
+    // Horizontal sizer inside the colored panel
     wxBoxSizer* buttonBar = new wxBoxSizer(wxHORIZONTAL);
 
-    // Create standard buttons with visible borders
-    wxButton* btnNew = new wxButton(buttonPanel, wxID_NEW, _("New"));
-    wxButton* btnEdit = new wxButton(buttonPanel, wxID_EDIT, _("Edit"));
-    wxButton* btnDelete = new wxButton(buttonPanel, wxID_DELETE, _("Delete"));
-    wxButton* btnReset = new wxButton(buttonPanel, wxID_REFRESH, _("Reset"));
-    wxButton* btnResetAll = new wxButton(buttonPanel, wxID_ANY, _("Reset All"));
-    wxButton* btnDeleteAll = new wxButton(buttonPanel, wxID_CLEAR, _("Delete All"));
+    // Create buttons, parent = buttonBarPanel
+    wxButton* btnNew = new wxButton(buttonBarPanel, wxID_NEW, _("New"));
+    wxButton* btnEdit = new wxButton(buttonBarPanel, wxID_EDIT, _("Edit"));
+    wxButton* btnDelete = new wxButton(buttonBarPanel, wxID_DELETE, _("Delete"));
+    wxButton* btnReset = new wxButton(buttonBarPanel, wxID_REFRESH, _("Reset"));
+    wxButton* btnResetAll = new wxButton(buttonBarPanel, wxID_ANY, _("Reset All"));
+    wxButton* btnDeleteAll = new wxButton(buttonBarPanel, wxID_CLEAR, _("Delete All"));
 
-    // Limit maximum height of individual buttons
+    // Optional: Restrict button heights
     int buttonHeight = 24;
-    btnNew->SetMinSize(wxSize(-1, buttonHeight));
     btnNew->SetMaxSize(wxSize(-1, buttonHeight));
-    btnEdit->SetMinSize(wxSize(-1, buttonHeight));
     btnEdit->SetMaxSize(wxSize(-1, buttonHeight));
-    btnDelete->SetMinSize(wxSize(-1, buttonHeight));
     btnDelete->SetMaxSize(wxSize(-1, buttonHeight));
-    btnReset->SetMinSize(wxSize(-1, buttonHeight));
     btnReset->SetMaxSize(wxSize(-1, buttonHeight));
-    btnResetAll->SetMinSize(wxSize(-1, buttonHeight));
     btnResetAll->SetMaxSize(wxSize(-1, buttonHeight));
-    btnDeleteAll->SetMinSize(wxSize(-1, buttonHeight));
     btnDeleteAll->SetMaxSize(wxSize(-1, buttonHeight));
 
-    // Add buttons to the horizontal sizer with minimal spacing
+    // Add buttons to the horizontal sizer with minimal margins
     buttonBar->Add(btnNew, 0, wxALL, 0);
     buttonBar->Add(btnEdit, 0, wxALL, 0);
     buttonBar->Add(btnDelete, 0, wxALL, 0);
@@ -208,24 +203,23 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     buttonBar->Add(btnResetAll, 0, wxALL, 0);
     buttonBar->Add(btnDeleteAll, 0, wxALL, 0);
 
-    // Set fixed height for the button panel
+    buttonBarPanel->SetSizer(buttonBar);
+
+    // Limit total height of the button panel to visualize stretching
     int totalHeight = 30;
-    buttonPanel->SetMinSize(wxSize(-1, totalHeight));
-    buttonPanel->SetMaxSize(wxSize(-1, totalHeight));
+    buttonBarPanel->SetMinSize(wxSize(-1, totalHeight));
+    buttonBarPanel->SetMaxSize(wxSize(-1, totalHeight));
 
-    // Apply the button bar sizer to the panel
-    buttonPanel->SetSizer(buttonBar);
+    // Add button panel to the main sizer
+    sizer->Prepend(buttonBarPanel, 0, wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 2);
 
-    // Place the button panel at the top of the main sizer
-    sizer->Prepend(buttonPanel, 0, wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 2); // Avoid wxALL to prevent bottom margin inflation
+    // Set distinct color for the alarm list to visualize space
+    m_lStatus->SetBackgroundColour(*wxBLUE);
 
-    // Ensure the alarm list uses all remaining space
+    // Ensure the list fills all remaining space
     sizer->Add(m_lStatus, 1, wxEXPAND | wxALL, 2);
 
-    // Optional: Set minimum height for the alarm list if desired
-    m_lStatus->SetMinSize(wxSize(-1, 150));
-
-    // Bind button events to respective handlers
+    // Bind button events
     btnNew->Bind(wxEVT_BUTTON, &WatchdogDialog::OnNew, this);
     btnEdit->Bind(wxEVT_BUTTON, &WatchdogDialog::OnEdit, this);
     btnDelete->Bind(wxEVT_BUTTON, &WatchdogDialog::OnDelete, this);
@@ -236,17 +230,21 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     // Apply layout updates
     this->Layout();
 
-    // Debug output to verify sizing
-    wxSize panelSize = buttonPanel->GetSize();
+    // Hard debug after layout
+    wxSize panelSize = buttonBarPanel->GetSize();
     wxSize listSize = m_lStatus->GetSize();
-    wxSize newSize = btnNew->GetSize();
+    wxSize btnSize = btnNew->GetSize();
 
-    wxLogMessage("DEBUG - Button panel actual size: %d x %d", panelSize.GetWidth(), panelSize.GetHeight());
+    wxLogMessage("DEBUG - Button bar panel actual size: %d x %d", panelSize.GetWidth(), panelSize.GetHeight());
     wxLogMessage("DEBUG - Alarm list actual size: %d x %d", listSize.GetWidth(), listSize.GetHeight());
-    wxLogMessage("DEBUG - Button 'New' actual size: %d x %d", newSize.GetWidth(), newSize.GetHeight());
+    wxLogMessage("DEBUG - Button 'New' actual size: %d x %d", btnSize.GetWidth(), btnSize.GetHeight());
 
-    printf("DEBUG - Button panel actual size: %d x %d\n", panelSize.GetWidth(), panelSize.GetHeight());
-    fflush(stdout); // Force terminal flush on MacOS
+    printf("DEBUG - Button bar panel: %d x %d | List: %d x %d | Button New: %d x %d\n",
+        panelSize.GetWidth(), panelSize.GetHeight(),
+        listSize.GetWidth(), listSize.GetHeight(),
+        btnSize.GetWidth(), btnSize.GetHeight());
+    fflush(stdout);
+
 
     SetSize(size);
     this->SetSizeHints(250, 100);
